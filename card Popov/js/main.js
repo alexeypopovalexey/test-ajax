@@ -1,6 +1,5 @@
 import {userService} from "./user-service.js";
 const body = document.querySelector('body');
-const btnSubmit = document.querySelector('#ajax_form')
 
 function drawCard (event) {
     const users = event.detail;
@@ -19,7 +18,7 @@ function drawCard (event) {
         const text = arrayTextCard.join(' ')
 
             ourCards.insertAdjacentHTML ('beforeend', 
-             `<div class="col-12 col-md-4 col-lg-3 card__container"><a href="#" class="card__my">
+            `<div class="col-12 col-md-4 col-lg-3 card__container" ><a href="#" class="card__my">
             <div class="card">
             <img src="${user.picture}" class="card-img-top" alt="...">
             <div class="card-body">
@@ -33,6 +32,7 @@ function drawCard (event) {
             </div> `
             )
     }
+    
 }
 
 
@@ -50,18 +50,31 @@ function changePost (event) {
                 <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Title</label>
                     <input type="text" class="form-control" id="exampleFormControlInput1" name="title__form" value="${user.name}" autocomplete="off">
-                  </div>
-                  <div class="mb-3">
+                </div>
+                <div class="mb-3">
                     <label for="exampleFormControlTextarea1" class="form-label">Text</label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" name="text__form" rows="3" autocomplete="off">${textCard}</textarea>
-                  </div>
-                  <button type="submit" class="btn btn-success" id="btn_submit">Submit</button>
+                </div>
+                <input type="submit" class="btn btn-success btn__submit" value="Submit" id="btn_submit">
                 </form>
                 </div>`
             }
         }
         
     }
+    const btnSubmit = document.querySelector('#btn_submit');
+    btnSubmit.addEventListener("click", function(event) {
+    event.preventDefault();
+    const arreyChose = document.querySelectorAll('input, textarea');
+    const values = {};
+    arreyChose.forEach((item) => {
+        values[item.name] = item.value
+    })
+    alert(`Your new title"${values.title__form}"! Your new text "${values.text__form}"`)
+    sendAjaxForm('ajax_form', 'http://www.json-generator.com/api/json/get/bTOOvcPvyq?indent=2');
+    return
+})
+
 }
 
 function sendAjaxForm(ajax_form, url) {
@@ -70,8 +83,7 @@ function sendAjaxForm(ajax_form, url) {
         type:     "POST", 
         dataType: "html", 
         data: $("#"+ajax_form).serialize(),
-          
- 	});
+    });
 
 }
 
@@ -83,11 +95,6 @@ function startUp () {
 
 window.addEventListener('load', startUp);
 window.addEventListener('click', changePost);
-jQuery(document).ready(function($) {
-    $('#btn_submit').on('click', function (event) {
-        event.preventDefault();
-        alert('sd')
-    });
-  });
+
 
 
